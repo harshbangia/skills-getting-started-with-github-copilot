@@ -38,6 +38,45 @@ activities = {
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    # Sports activities
+    "Soccer Team": {
+        "description": "Join the school soccer team for training and matches",
+        "schedule": "Tuesdays & Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 22,
+        "participants": []
+    },
+    "Swimming Club": {
+        "description": "Improve your swimming skills and compete in meets",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    # Artistic activities
+    "Photography Club": {
+        "description": "Learn photography techniques and participate in photo walks",
+        "schedule": "Fridays, 4:00 PM - 5:00 PM",
+        "max_participants": 10,
+        "participants": []
+    },
+    "Drama Society": {
+        "description": "Act, direct, and produce plays and performances",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": []
+    },
+    # Intellectual activities
+    "Math Olympiad": {
+        "description": "Prepare for and compete in math competitions",
+        "schedule": "Thursdays, 3:30 PM - 4:30 PM",
+        "max_participants": 16,
+        "participants": []
+    },
+    "Science Quiz Bowl": {
+        "description": "Test your science knowledge in a fun quiz format",
+        "schedule": "Wednesdays, 4:00 PM - 5:00 PM",
+        "max_participants": 12,
+        "participants": []
     }
 }
 
@@ -55,6 +94,11 @@ def get_activities():
 @app.post("/activities/{activity_name}/signup")
 def signup_for_activity(activity_name: str, email: str):
     """Sign up a student for an activity"""
+    # Validate student is not already signed up
+    for activity in activities.values():
+        if email in activity["participants"]:
+            raise HTTPException(status_code=400, detail="Student already signed up")
+
     # Validate activity exists
     if activity_name not in activities:
         raise HTTPException(status_code=404, detail="Activity not found")
